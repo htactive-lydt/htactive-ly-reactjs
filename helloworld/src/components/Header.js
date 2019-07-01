@@ -13,9 +13,9 @@ function Header(props) {
               <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
             </li>
             {
-              props.data.menu.map(item => {
+              props.data.menu.map((item, index)=> {
                 return (
-                  <li className="nav-item">
+                  <li className="nav-item" key={index}>
                     <a className="nav-link" href="#">{item}</a>
                   </li>
                 )

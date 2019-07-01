@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Slide1 from "../assets/images/slider1.png"
+import Slide2 from "../assets/images/slider2.png"
+import Slide3 from "../assets/images/slider3.png"
 
 export default class Slider extends Component {
   render() {
@@ -6,13 +9,13 @@ export default class Slider extends Component {
       <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
       <div className="carousel-inner">
         <div className="carousel-item active">
-          <img className="d-block w-100" src="/assets/images/slider1.png" alt="First slide" />
+          <img className="d-block w-100" src={Slide1} alt="First slide" />
         </div>
         <div className="carousel-item">
-          <img className="d-block w-100" src="assets/images/slider2.png" alt="Second slide" />
+          <img className="d-block w-100" src={Slide2} alt="Second slide" />
         </div>
         <div className="carousel-item">
-          <img className="d-block w-100" src="assets/images/slider3.png" alt="Third slide" />
+          <img className="d-block w-100" src={Slide3} alt="Third slide" />
         </div>
       </div>
       <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">

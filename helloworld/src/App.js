@@ -1,55 +1,61 @@
-import React from "react";
+import React, { Component } from "react";
 import logo from "./logo.svg";
-import Header from "./Component/Header";
-import Slider from "./Component/Slider";
-import Card from "./Component/Card";
-
+import Header from "./components/Header";
+import Slider from "./components/Slider";
+import Card from "./components/Card";
 import "./App.css";
-const data = {
-  title: "LY LY SHOP",
-  menu: ["Áo Quần", "Giày Dép", "Phụ Kiện", "Đồ Bơi"]
-};
 
-const cards = [
-  {
-    img: "/assets/images/img1.png",
-    title: "Ví Da"
-  },
-  {
-    img: "/assets/images/img2.png",
-    title: "Ví Da Bò"
-  },
-  {
-    img: "/assets/images/img3.png",
-    title: "Ví Da Heo"
-  },
-  {
-    img: "/assets/images/img4.png",
-    title: "Ví Da Cá Sấu"
-  },
-  {
-    img: "/assets/images/img5.png",
-    title: "Ví Da Trâu"
-  },
-  {
-    img: "/assets/images/img6.png",
-    title: "Ví Da Ngựa"
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cards: [],
+      data: {
+        title: "LY LY SHOP",
+        menu: ["Áo Quần", "Giày Dép", "Phụ Kiện", "Đồ Bơi"]
+      }
+    };  
   }
-];
-function App() {
-  return (
-    <>
-      <Header data={data} />
-      <Slider />
-      <div className="container">
-        <div className="row">
-          {cards.map(card => {
-            return <Card card={card} />;
-          })}
+
+  componentDidMount() {
+    fetch("http://5d19c3a8b3b6a100148d22b1.mockapi.io/startWithReact")
+      .then(res=>res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            cards: result
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
+  }
+
+  handleReceive = data => {
+    //Get parameter from children component
+    console.log(data);
+  };
+
+  render() {
+    return (
+      <>
+        <Header data={this.state.data} />
+        <Slider />
+        <div className="container">
+          <div className="row">
+            {this.state.cards.map(card => {
+              return <Card key={card.id} card={card} onReceiveData={this.handleReceive} />;
+            })}
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default App;
