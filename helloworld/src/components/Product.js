@@ -22,7 +22,7 @@ export default class Product extends Component {
   };
 
   render() {
-    const {img, title, discription} = this.props.card;
+    const {img, title, description} = this.props.card;
     return (
       <div className="col-sm-3">
         <Card>
@@ -35,7 +35,7 @@ export default class Product extends Component {
           <CardBody>
             <CardTitle>{title}</CardTitle>
             <CardText>
-              {discription}
+              {description}
             </CardText>
             <Button onClick={this.sendToParent}>Button</Button>
           </CardBody>
