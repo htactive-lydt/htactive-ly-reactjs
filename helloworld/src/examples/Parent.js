@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
+import React from "react";
 
-export default class Parent extends Component {
-  handleXinTien= (tenThangCon) =>{
-    console.log(`Thằng con tên ${tenThangCon} đang xin tiền`)
-  }
+function Parent() {
+  handleAskMoney = nameChild => {
+    console.log(`Name's of my child ${nameChild} is asking money`);
+  };
 
-  render() {
-    return (
-      <div>
-        <h1>Tao là cha</h1>
-        <Child onXinTien={this.handleXinTien}/>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <h1>I'm a father</h1>
+      <Child onAskMoney={this.handleAskMoney} />
+    </div>
+  );
 }
+export default Parent;

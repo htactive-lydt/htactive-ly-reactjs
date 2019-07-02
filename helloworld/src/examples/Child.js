@@ -8,15 +8,16 @@ export default class Child extends Component {
     }
   }
 
-  handleXinTien= () =>{
-    this.props.onXinTien(this.state.name);
+  handleAskMoney= () =>{
+    this.props.onAskMoney(this.state.name); 
+    // Call props from parent and pass parameter to parent by this props
   }
 
   render() {
     return (
       <div>
-        <h1>Tao là con</h1>
-        <button className="btn btn-danger" onClick={this.handleXinTien}>Xin Tiền</button>
+        <h1>I'm a child</h1>
+        <button className="btn btn-danger" onClick={this.handleAskMoney}>Ask money</button>
       </div>
     )
   }

@@ -3,7 +3,6 @@ import logo from "./logo.svg";
 import Header from "./components/Header";
 import Slider from "./components/Slider";
 import Card from "./components/Card";
-import "./App.css";
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +15,7 @@ class App extends Component {
       }
     };  
   }
+
 
   componentDidMount() {
     fetch("http://5d19c3a8b3b6a100148d22b1.mockapi.io/startWithReact")
@@ -42,13 +42,15 @@ class App extends Component {
   };
 
   render() {
+    const {cards, data} = this.state;
+
     return (
       <>
-        <Header data={this.state.data} />
+        <Header data={data} />
         <Slider />
         <div className="container">
           <div className="row">
-            {this.state.cards.map(card => {
+            {cards.map(card => {
               return <Card key={card.id} card={card} onReceiveData={this.handleReceive} />;
             })}
           </div>
