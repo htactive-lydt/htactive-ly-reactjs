@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import Header from "./components/Header";
 import Slider from "./components/Slider";
-import Card from "./components/Card";
+import Product from "./components/Product";
 
 class App extends Component {
   constructor(props) {
@@ -51,7 +50,7 @@ class App extends Component {
         <div className="container">
           <div className="row">
             {cards.map(card => {
-              return <Card key={card.id} card={card} onReceiveData={this.handleReceive} />;
+              return <Product key={card.id} card={card} onReceiveData={this.handleReceive} />;
             })}
           </div>
         </div>
