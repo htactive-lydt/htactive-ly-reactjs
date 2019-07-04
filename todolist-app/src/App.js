@@ -42,7 +42,7 @@ export default class App extends Component {
       .then(res => {
         if (res.status === 201) {
           this.getData();
-          // this.select(this.state.selectedValue);
+          this.select(this.state.selectedValue);
         }
       });
   };
@@ -83,25 +83,27 @@ export default class App extends Component {
   };
 
   select = selectedValue => {
+    console.log(selectedValue);
+
     var items = this.state.items;
+
     let results = [];
-    this.setState({
-      selectedValue: {selectedValue}
-    })
     if (selectedValue === "2") {
       results = items.filter(item => !item.isComplete);
     } else if (selectedValue === "3") {
       results = items.filter(item => item.isComplete);
     }
-    this.setState({
-      results: results
-    });
+
+    this.setState({ results, selectedValue });
   };
 
   render() {
     const { items, results } = this.state;
-    const percent =
-      (items.filter(item => item.isComplete).length / items.length) * 100;
+    let percent = 0;
+    if (items.length > 0) {
+      percent =
+        (items.filter(item => item.isComplete).length / items.length) * 100;
+    }
     return (
       <div className="container">
         <TodoForm addNewTask={this.addNewTask} />
