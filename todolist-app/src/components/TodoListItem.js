@@ -1,9 +1,48 @@
 import React, { Component } from "react";
 
 export default class TodoListItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      isUpdating: false
+    };
+  }
+
+  deleteTask = () => {
+    this.props.deleteTask(this.props.task);
+  };
+
+  markDoneTask = () => {
+    this.props.task.isComplete = !this.props.task.isComplete;
+    this.props.markDoneTask(this.props.task);
+  };
+
+  hanleUpdate = () => {
+    this.setState(prevState => ({
+      isUpdating: !prevState.isUpdating
+    }));
+  };
+
+  hanleChange = event => {
+    this.setState({
+      value: event.target.value
+    })
+  };
+
+  saveUpdateTask = () => {
+    this.props.task.task = this.state.value;
+    this.props.updateTask(this.props.task);
+    this.hanleUpdate();
+  };
+
+  update = () => {
+    this.hanleUpdate();
+  };
 
   render() {
     const { id, task, isComplete } = this.props.task;
+    const { isUpdating } = this.state;
     return (
       <li className="list-group-item checkbox">
         <div className="row">
@@ -13,42 +52,57 @@ export default class TodoListItem extends Component {
                 id="toggleTaskStatus"
                 type="checkbox"
                 defaultChecked={isComplete}
+                onChange={this.markDoneTask}
               />
             </label>
           </div>
-          <div className="col-md-9 col-xs-9 col-lg-9 col-sm-9 task-text">
+          <div
+            className={`col-md-9 col-xs-9 col-lg-9 col-sm-9 ${
+              isUpdating ? "task-text" : "task-text-disable"
+            }`}
+          >
             <input
               type="text"
               defaultValue={task}
-              style={{
-                border: "none",
-                backgroundColor: "#fff",
-                width: "300px",
-                height: "30px"
-              }}
-              disabled
               id={id}
-              className={isComplete ? "complete" : ""}
+              onChange={this.hanleChange}
+              className={`form-control col-sm-6 ${isComplete ? "complete" : ""}`}
             />
           </div>
           <div>
-            <span hidden id="group-edit">
+            {isUpdating ? (
+              <span>
+                <button
+                  type="button"
+                  className="btn btn-success btn-control"
+                  onClick={this.saveUpdateTask}
+                >
+                  <i className="fa fa-floppy-o" />
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-control"
+                  onClick={this.hanleUpdate}
+                >
+                  <i className="fa fa-ban" />
+                </button>
+              </span>
+            ) : (
               <button
                 type="button"
-                className="btn btn-success"
+                className="btn btn-warning margin btn-control"
+                onClick={this.update}
               >
-                <i className="fa fa-floppy-o" />
+                <i className="fa fa-pencil" />
               </button>
-              <button type="button" className="btn btn-default">
-                <i className="fa fa-ban" />
-              </button>
-            </span>
-            <button type="button" className="btn btn-warning margin">
-              <i className="fa fa-pencil" />
-            </button>
-            <button type="button" className="btn btn-danger">
+            )}
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={this.deleteTask}
+            >
               <i className="fa fa-trash-o" />
-            </button>{" "}
+            </button>
             &nbsp;
           </div>
         </div>

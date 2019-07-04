@@ -2,12 +2,24 @@
   border-color: #ddd;
 }
 
+.container{
+  margin-top: 50px;
+}
+
 .panel {
   margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.task-text-disable input{
+  border: none;
+  background-color: #fff;
+  width: 300px;
+  height: 30px;
+  pointer-events:none;
 }
 
 .panel-default>.panel-heading {
@@ -39,4 +51,13 @@
 
 .complete{
   text-decoration: line-through;
+}
+
+.btn-control{
+  margin-right: 7px;
+}
+
+.combobox{
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
