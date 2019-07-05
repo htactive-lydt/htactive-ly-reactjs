@@ -4,16 +4,10 @@ import TodoListItem from "./TodoListItem";
 export default class TodoList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectValue: 0
-    };
   }
 
-  changeFilter = async event => {
-    await this.setState({
-      selectValue: event.target.value
-    });
-    this.props.changeFilter(this.state.selectValue);
+  changeFilter = event => {
+    this.props.changeFilter(event.target.value);
   };
 
   render() {
@@ -22,7 +16,6 @@ export default class TodoList extends Component {
         key={item.id}
         task={item}
         deleteTask={this.props.deleteTask}
-        markDoneTask={this.props.markDoneTask}
         updateTask={this.props.updateTask}
       />
     ));
@@ -47,7 +40,6 @@ export default class TodoList extends Component {
           </div>
           <select
             className="form-control col-sm-2 combobox"
-            defaultValue={this.state.selectValue}
             onChange={this.changeFilter}
             id="selected"
           >

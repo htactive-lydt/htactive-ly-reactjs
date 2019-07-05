@@ -10,7 +10,6 @@ const url = "http://5d19c3a8b3b6a100148d22b1.mockapi.io";
 export default class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       items: []
     };
@@ -35,25 +34,20 @@ export default class App extends Component {
     this.getData();
   }
 
-  addNewTask = async newTask => {
-    await axios.post(url + "/todoList", newTask).then(res => {
+  addNewTask = newTask => {
+    axios.post(url + "/todoList", newTask).then(res => {
       if (res.status === 201) {
         this.getData();
       }
     });
   };
 
-  deleteTask = async task => {
-    await axios.delete(url + `/todoList/${task.id}`).then(res => {
+  deleteTask = task => {
+    axios.delete(url + `/todoList/${task.id}`).then(res => {
       if (res.status === 200) {
         this.getData();
       }
     });
-  };
-
-  markDoneTask = async task => {
-    await axios.put(url + `/todoList/${task.id}`, task);
-    this.select(this.state.selectedValue);
   };
 
   updateTask = task => {
@@ -96,7 +90,6 @@ export default class App extends Component {
           items={this.select()}
           percent={Math.round(percent)}
           deleteTask={this.deleteTask}
-          markDoneTask={this.markDoneTask}
           updateTask={this.updateTask}
           changeFilter={this.changeFilter}
         />

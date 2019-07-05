@@ -14,8 +14,10 @@ export default class TodoListItem extends Component {
   };
 
   markDoneTask = () => {
-    this.props.task.isComplete = !this.props.task.isComplete;
-    this.props.markDoneTask(this.props.task);
+    this.props.updateTask({
+      ...this.props.task,
+      isComplete: !this.props.task.isComplete
+    });
   };
 
   hanleUpdate = () => {
@@ -31,12 +33,10 @@ export default class TodoListItem extends Component {
   };
 
   saveUpdateTask = () => {
-    this.props.task.task = this.state.value;
-    this.props.updateTask(this.props.task);
-    this.hanleUpdate();
-  };
-
-  update = () => {
+    this.props.updateTask({
+      ...this.props.task,
+      task: this.state.value
+    });
     this.hanleUpdate();
   };
 
@@ -91,7 +91,7 @@ export default class TodoListItem extends Component {
               <button
                 type="button"
                 className="btn btn-warning margin btn-control"
-                onClick={this.update}
+                onClick={this.hanleUpdate}
               >
                 <i className="fa fa-pencil" />
               </button>
