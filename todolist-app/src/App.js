@@ -5,19 +5,20 @@ import axios from "axios";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 
+const url = "http://5d19c3a8b3b6a100148d22b1.mockapi.io";
+
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       items: [],
-      results: [],
       selectedValue: ""
     };
   }
 
   getData = () => {
-    axios.get("http://5d19c3a8b3b6a100148d22b1.mockapi.io/todoList").then(
+    axios.get(url + "/todoList").then(
       result => {
         this.setState({
           items: result.data
@@ -35,70 +36,48 @@ export default class App extends Component {
     this.getData();
   }
 
-  addNewTask = newTask => {
-    console.log(newTask);
-    axios
-      .post("http://5d19c3a8b3b6a100148d22b1.mockapi.io/todoList", newTask)
-      .then(res => {
-        if (res.status === 201) {
-          this.getData();
-          this.select(this.state.selectedValue);
-        }
-      });
+  addNewTask = async newTask => {
+    await axios.post(url + "/todoList", newTask);
+
+    this.select(this.state.selectedValue);
   };
 
-  deleteTask = task => {
-    axios
-      .delete(`http://5d19c3a8b3b6a100148d22b1.mockapi.io/todoList/${task.id}`)
-      .then(res => {
-        if (res.status === 200) {
-          this.getData();
-        }
-      });
+  deleteTask = async task => {
+    await axios.delete(url + `/todoList/${task.id}`);
+    this.select(this.state.selectedValue);
   };
 
-  markDoneTask = task => {
-    axios
-      .put(
-        `http://5d19c3a8b3b6a100148d22b1.mockapi.io/todoList/${task.id}`,
-        task
-      )
-      .then(res => {
-        if (res.status === 200) {
-        }
-      });
+  markDoneTask = async task => {
+    await axios.put(url + `/todoList/${task.id}`, task);
+    this.select(this.state.selectedValue);
   };
 
   updateTask = task => {
-    axios
-      .put(
-        `http://5d19c3a8b3b6a100148d22b1.mockapi.io/todoList/${task.id}`,
-        task
-      )
-      .then(res => {
-        if (res.status === 200) {
-          this.getData();
-        }
-      });
+    axios.put(url + `/todoList/${task.id}`, task).then(res => {
+      if (res.status === 200) {
+        this.getData();
+      }
+    });
   };
 
-  select = selectedValue => {
-    console.log(selectedValue);
+  select = async selectedValue => {
+    let data = await axios.get(url + "/todoList").then(res => {
+      return res.data;
+    });
 
-    var items = this.state.items;
-
-    let results = [];
     if (selectedValue === "2") {
-      results = items.filter(item => !item.isComplete);
+      data = data.filter(item => !item.isComplete);
     } else if (selectedValue === "3") {
-      results = items.filter(item => item.isComplete);
+      data = data.filter(item => item.isComplete);
     }
-
-    this.setState({ results, selectedValue });
+    this.setState({
+      items: data,
+      selectedValue
+    });
   };
 
   render() {
-    const { items, results } = this.state;
+    const { items } = this.state;
     let percent = 0;
     if (items.length > 0) {
       percent =
@@ -108,7 +87,7 @@ export default class App extends Component {
       <div className="container">
         <TodoForm addNewTask={this.addNewTask} />
         <TodoList
-          items={results.length ? results : items}
+          items={items}
           percent={Math.round(percent)}
           deleteTask={this.deleteTask}
           markDoneTask={this.markDoneTask}
