@@ -12,8 +12,7 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      items: [],
-      selectedValue: ""
+      items: []
     };
   }
 
@@ -37,14 +36,19 @@ export default class App extends Component {
   }
 
   addNewTask = async newTask => {
-    await axios.post(url + "/todoList", newTask);
-
-    this.select(this.state.selectedValue);
+    await axios.post(url + "/todoList", newTask).then(res => {
+      if (res.status === 201) {
+        this.getData();
+      }
+    });
   };
 
   deleteTask = async task => {
-    await axios.delete(url + `/todoList/${task.id}`);
-    this.select(this.state.selectedValue);
+    await axios.delete(url + `/todoList/${task.id}`).then(res => {
+      if (res.status === 200) {
+        this.getData();
+      }
+    });
   };
 
   markDoneTask = async task => {
@@ -60,24 +64,26 @@ export default class App extends Component {
     });
   };
 
-  select = async selectedValue => {
-    let data = await axios.get(url + "/todoList").then(res => {
-      return res.data;
-    });
-
-    if (selectedValue === "2") {
-      data = data.filter(item => !item.isComplete);
-    } else if (selectedValue === "3") {
-      data = data.filter(item => item.isComplete);
-    }
+  changeFilter = selectedValue => {
     this.setState({
-      items: data,
       selectedValue
     });
   };
 
+  select = () => {
+    switch (this.state.selectedValue) {
+      case "2":
+        return this.state.items.filter(item => !item.isComplete);
+      case "3":
+        return this.state.items.filter(item => item.isComplete);
+      default:
+        return this.state.items;
+    }
+  };
+
   render() {
     const { items } = this.state;
+
     let percent = 0;
     if (items.length > 0) {
       percent =
@@ -87,12 +93,12 @@ export default class App extends Component {
       <div className="container">
         <TodoForm addNewTask={this.addNewTask} />
         <TodoList
-          items={items}
+          items={this.select()}
           percent={Math.round(percent)}
           deleteTask={this.deleteTask}
           markDoneTask={this.markDoneTask}
           updateTask={this.updateTask}
-          select={this.select}
+          changeFilter={this.changeFilter}
         />
       </div>
     );

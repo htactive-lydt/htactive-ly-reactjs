@@ -9,17 +9,14 @@ export default class TodoList extends Component {
     };
   }
 
-  handleChange = event => {
-    this.setState({
+  changeFilter = async event => {
+    await this.setState({
       selectValue: event.target.value
     });
-    setTimeout(() => {
-      this.props.select(this.state.selectValue);
-    }, 1000);
+    this.props.changeFilter(this.state.selectValue);
   };
 
   render() {
-    // console.log(this.props)
     var items = this.props.items.map(item => (
       <TodoListItem
         key={item.id}
@@ -29,7 +26,7 @@ export default class TodoList extends Component {
         updateTask={this.props.updateTask}
       />
     ));
-    const {percent} = this.props;
+    const { percent } = this.props;
     return (
       <div className="panel panel-primary">
         <div className="panel-heading">
@@ -37,22 +34,21 @@ export default class TodoList extends Component {
         </div>
         <div className="panel-body">
           <div className="progress">
-            
             <div
               className="progress-bar progress-bar-striped bg-info"
               role="progressbar"
-              style={{width: percent + '%'}}
+              style={{ width: percent + "%" }}
               aria-valuenow={75}
               aria-valuemin={0}
               aria-valuemax={100}
             >
-            {percent}%
+              {percent}%
             </div>
           </div>
           <select
             className="form-control col-sm-2 combobox"
-            value={this.state.selectValue}
-            onChange={this.handleChange}
+            defaultValue={this.state.selectValue}
+            onChange={this.changeFilter}
             id="selected"
           >
             <option value="1">All Task</option>
