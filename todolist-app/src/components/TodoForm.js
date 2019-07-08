@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Button from "./Button";
 
 export default class TodoForm extends Component {
   state = {
@@ -12,7 +14,7 @@ export default class TodoForm extends Component {
     }));
   };
 
-  onSubmit = event => {
+  addNewTask = event => {
     event.preventDefault();
     let newTask = {
       task: this.state.value,
@@ -35,17 +37,14 @@ export default class TodoForm extends Component {
     const { isOpenForm } = this.state;
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
+        <form>
           <div className="panel panel-default">
             <div className="panel-heading">
-              <button
-                type="button"
+              <Button
                 className="btn btn-success"
-                id="btnAdd"
                 onClick={this.handleOpenForm}
-              >
-                {isOpenForm ? <span>CANCEL</span> : <span>ADD NEW</span>}
-              </button>
+                text={isOpenForm ? "CANCEL" : "ADD NEW"}
+              />
             </div>
             {isOpenForm ? (
               <div className="panel-body row" id="form-add">
@@ -61,9 +60,11 @@ export default class TodoForm extends Component {
                   />
                 </div>
                 <div className="form-group col-md-1">
-                  <button type="submit" className="btn btn-primary">
-                    Add
-                  </button>
+                  <Button
+                    className="btn btn-primary"
+                    onClick={this.addNewTask}
+                    text="ADD"
+                  />
                 </div>
               </div>
             ) : (
@@ -75,3 +76,7 @@ export default class TodoForm extends Component {
     );
   }
 }
+
+TodoForm.propTypes = {
+  addNewTask: PropTypes.func.isRequired
+};

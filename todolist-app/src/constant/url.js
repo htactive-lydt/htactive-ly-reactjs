@@ -1,0 +1,1 @@
+export const url = "http://5d19c3a8b3b6a100148d22b1.mockapi.io/todoList";

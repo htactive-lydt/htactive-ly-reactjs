@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import "./App.css";
-import axios from "axios";
 
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
-
-const url = "http://5d19c3a8b3b6a100148d22b1.mockapi.io";
+import {
+  addNewTask,
+  updateTask,
+  deleteTask,
+  getData
+} from "./helpers/requestAPI";
+import {calPercent} from './helpers/calPercent'
 
 export default class App extends Component {
   constructor(props) {
@@ -15,47 +19,34 @@ export default class App extends Component {
     };
   }
 
-  getData = () => {
-    axios.get(url + "/todoList").then(
-      result => {
-        this.setState({
-          items: result.data
-        });
-      },
-      error => {
-        this.setState({
-          error
-        });
-      }
-    );
+  getData = async () => {
+    let data = await getData();
+    this.changeState(data);
   };
 
   componentDidMount() {
     this.getData();
   }
 
-  addNewTask = newTask => {
-    axios.post(url + "/todoList", newTask).then(res => {
-      if (res.status === 201) {
-        this.getData();
-      }
+  changeState = (data) => {
+    this.setState({
+      items: data.reverse()
     });
+  }
+
+  handleAddNewTask = async newTask => {
+    let data = await addNewTask(newTask);
+    this.changeState(data);
   };
 
-  deleteTask = task => {
-    axios.delete(url + `/todoList/${task.id}`).then(res => {
-      if (res.status === 200) {
-        this.getData();
-      }
-    });
+  handleDeleteTask = async task => {
+    let data = await deleteTask(task);
+    this.changeState(data);
   };
 
-  updateTask = task => {
-    axios.put(url + `/todoList/${task.id}`, task).then(res => {
-      if (res.status === 200) {
-        this.getData();
-      }
-    });
+  handleUpdateTask = async task => {
+    let data = await updateTask(task);
+    this.changeState(data);
   };
 
   changeFilter = selectedValue => {
@@ -78,19 +69,14 @@ export default class App extends Component {
   render() {
     const { items } = this.state;
 
-    let percent = 0;
-    if (items.length > 0) {
-      percent =
-        (items.filter(item => item.isComplete).length / items.length) * 100;
-    }
     return (
       <div className="container">
-        <TodoForm addNewTask={this.addNewTask} />
+        <TodoForm addNewTask={this.handleAddNewTask} />
         <TodoList
           items={this.select()}
-          percent={Math.round(percent)}
-          deleteTask={this.deleteTask}
-          updateTask={this.updateTask}
+          percent={Math.round(calPercent(items))}
+          deleteTask={this.handleDeleteTask}
+          updateTask={this.handleUpdateTask}
           changeFilter={this.changeFilter}
         />
       </div>

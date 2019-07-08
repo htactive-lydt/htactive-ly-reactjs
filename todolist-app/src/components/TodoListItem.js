@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Button from "./Button";
 
 export default class TodoListItem extends Component {
   constructor(props) {
@@ -29,7 +31,7 @@ export default class TodoListItem extends Component {
   hanleChange = event => {
     this.setState({
       value: event.target.value
-    })
+    });
   };
 
   saveUpdateTask = () => {
@@ -66,47 +68,63 @@ export default class TodoListItem extends Component {
               defaultValue={task}
               id={id}
               onChange={this.hanleChange}
-              className={`form-control col-sm-6 ${isComplete ? "complete" : ""}`}
+              className={`form-control col-sm-6 ${
+                isComplete ? "complete" : ""
+              }`}
             />
           </div>
           <div>
             {isUpdating ? (
               <span>
-                <button
-                  type="button"
+                <Button
                   className="btn btn-success btn-control"
                   onClick={this.saveUpdateTask}
-                >
-                  <i className="fa fa-floppy-o" />
-                </button>
-                <button
-                  type="button"
+                  icon="fa fa-floppy-o"
+                />
+                <Button
                   className="btn btn-secondary btn-control"
                   onClick={this.hanleUpdate}
-                >
-                  <i className="fa fa-ban" />
-                </button>
+                  icon="fa fa-ban"
+                />
               </span>
             ) : (
-              <button
-                type="button"
+              <Button
                 className="btn btn-warning margin btn-control"
                 onClick={this.hanleUpdate}
-              >
-                <i className="fa fa-pencil" />
-              </button>
+                icon="fa fa-pencil"
+              />
             )}
-            <button
-              type="button"
+            <Button
               className="btn btn-danger"
-              onClick={this.deleteTask}
-            >
-              <i className="fa fa-trash-o" />
-            </button>
+              icon="fa fa-trash-o"
+              onClick={() =>
+                window.confirm("Do you want to delete this task?")
+                  ? this.deleteTask()
+                  : ""
+              }
+            />
             &nbsp;
           </div>
         </div>
       </li>
     );
+  }
+}
+
+TodoListItem.propTypes = {
+  task: PropTypes.exact({
+    id: PropTypes.number,
+    task: PropTypes.string,
+    isComplete: PropTypes.bool
+  }),
+  updateTask: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired
+};
+
+TodoListItem.defaultProps = {
+  task: {
+    id: 0,
+    task: "Null r nè",
+    isComplete: false
   }
 }
