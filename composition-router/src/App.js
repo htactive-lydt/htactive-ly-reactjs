@@ -1,22 +1,16 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import "bootstrap/dist/css/bootstrap.css";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import User from "./router/page/user";
-import Contact from "./router/page/contact";
-import Home from "./router/page/home";
-import Notfound from "./router/page/notfound";
+import routers from "./router/router";
 
 function App() {
+  const routerList = routers.map((item, index) => (
+    <Route exact path={item.path} component={item.main} exact={item.exact} />
+  ));
   return (
     <Router>
       <div>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/users" component={User} />
-          <Route path="/contact" component={Contact} />
-          <Route component={Notfound}/>
-        </Switch>
+        <Switch>{routerList}</Switch>
       </div>
     </Router>
   );

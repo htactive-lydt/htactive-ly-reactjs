@@ -1,14 +1,42 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink
-} from "reactstrap";
+import { Link, Route } from "react-router-dom";
+
+const menus = [
+  {
+    to: "/",
+    label: "Home",
+    exact: true
+  },
+  {
+    to: "/users",
+    label: "Users",
+    exact: false
+  },
+  {
+    to: "/contact",
+    label: "Contact",
+    exact: false
+  }
+];
+
+const MenuLi = ({ label, to, activeOnlyWhenExact }) => {
+  return (
+    <Route
+      path={to}
+      exact={activeOnlyWhenExact}
+      children={({match}) => {
+        var active = match ? "active" : "";
+        return (
+          <li className={`${active} nav-item`}>
+            <Link to={to} className="nav-link">
+              {label}
+            </Link>
+          </li>
+        );
+      }}
+    />
+  );
+};
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -25,28 +53,32 @@ export default class Header extends React.Component {
     });
   }
   render() {
+    const menuLis = menus.map((menu, index) => (
+      <MenuLi
+        to={menu.to}
+        activeOnlyWhenExact={menu.exact}
+        label={menu.label}
+      />
+    ));
     return (
-      <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">LYLY</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink>
-                  <Link to="/">Home</Link>
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink><Link to="/users">User</Link></NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink><Link to="/contact">Contact</Link></NavLink>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
-      </div>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a className="navbar-brand">LYLY</a>
+        <div className="collapse navbar-collapse" id="navb">
+          <ul className="navbar-nav mr-auto">
+           {menuLis}
+          </ul>
+          <form className="form-inline my-2 my-lg-0">
+            <input
+              className="form-control mr-sm-2"
+              type="text"
+              placeholder="Search"
+            />
+            <button className="btn btn-success my-2 my-sm-0" type="button">
+              Search
+            </button>
+          </form>
+        </div>
+      </nav>
     );
   }
 }
