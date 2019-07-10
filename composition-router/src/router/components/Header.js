@@ -58,11 +58,12 @@ export default class Header extends React.Component {
         to={menu.to}
         activeOnlyWhenExact={menu.exact}
         label={menu.label}
+        key={index}
       />
     ));
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a className="navbar-brand">LYLY</a>
+        <Link className="navbar-brand" to="/">LYLY</Link>
         <div className="collapse navbar-collapse" id="navb">
           <ul className="navbar-nav mr-auto">
            {menuLis}

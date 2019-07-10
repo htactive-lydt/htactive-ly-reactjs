@@ -4,14 +4,12 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import routers from "./router/router";
 
 function App() {
-  const routerList = routers.map((item, index) => (
-    <Route exact path={item.path} component={item.main} exact={item.exact} />
+  const routerList = routers.map(({ path, main, exact }, index) => (
+    <Route path={path} component={main} exact={exact} key={index} />
   ));
   return (
     <Router>
-      <div>
-        <Switch>{routerList}</Switch>
-      </div>
+      <Switch>{routerList}</Switch>
     </Router>
   );
 }

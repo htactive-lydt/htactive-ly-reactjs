@@ -3,6 +3,7 @@ import User from "./page/user";
 import Contact from "./page/contact";
 import Home from "./page/home";
 import Notfound from "./page/notfound";
+import ProductDetail from "./page/productDetail";
 
 const routers = [
   {
@@ -19,6 +20,11 @@ const routers = [
     path: "/contact",
     exact: false,
     main: () => <Contact />
+  },
+  {
+    path: "/product/:id",
+    exact: false,
+    main: ({match}) => <ProductDetail match={match}/>
   },
   {
     path: "",
